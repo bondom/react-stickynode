@@ -211,15 +211,16 @@ class Sticky extends Component {
         // on document from viewport.
         var top = this.scrollTop + this.state.top;
         var bottom = this.scrollTop + this.state.bottom;
+        var additionalBottomOffset = this.props.additionalBottomOffset || 0;
 
         // There are 2 principles to make sure Sticky won't get wrong so much:
         // 1. Reset Sticky to the original postion when "top" <= topBoundary
         // 2. Release Sticky to the bottom boundary when "bottom" >= bottomBoundary
         if (top <= this.state.topBoundary) { // #1
             this.reset();
-        } else if (bottom >= this.state.bottomBoundary) { // #2
+        } else if (bottom >= this.state.bottomBoundary - additionalBottomOffset) { // #2
             this.stickyBottom = this.state.bottomBoundary;
-            this.stickyTop = this.stickyBottom - this.state.height;
+            this.stickyTop = this.stickyBottom - this.state.height - additionalBottomOffset;
             this.release(this.stickyTop);
         } else {
             if (this.state.height > winHeight - this.state.top) {
